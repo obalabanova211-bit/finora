@@ -124,8 +124,8 @@ export default function ItemPage() {
         <>
           {pj
             ? <div className="ok-note">Платёж за {MONTH_RU[m]} оплачен{pj.est ? " (оценка списания)" : ""}</div>
-            : miss ? <div className="red-note">Платёж {ob.day}-го числа пропущен. Отметьте оплату, если уже заплатили.</div> : null}
-          <button className="btn" onClick={() => setPayOpen(true)}>Отметить оплату</button>
+            : miss ? <div className="red-note">Платёж {ob.day}-го числа пропущен. Если уже заплатили — нажмите «Оплатить».</div> : null}
+          <button className="btn" onClick={() => setPayOpen(true)}>Оплатить</button>
           {ob.balanceKop !== null && !ev && <button className="btn ghost" onClick={() => setCalcOpen(true)}>А если платить больше?</button>}
         </>
       )}
