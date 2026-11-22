@@ -32,7 +32,7 @@ export default function ItemPage() {
     return (
       <>
         <p className="mut">Обязательство не найдено.</p>
-        <button className="btn ghost" onClick={() => router.push("/")}>К списку</button>
+        <button className="btn ghost" onClick={() => router.push("/obligations")}>К списку</button>
         <Toast msg={toastMsg} />
       </>
     );
@@ -171,7 +171,7 @@ export default function ItemPage() {
           title="Удалить обязательство?"
           text={"«" + ob.name + "» и его история оплат будут удалены безвозвратно."}
           yesLabel="Удалить"
-          onYes={() => { apply(deleteObligation(st, ob.id)); toast("Удалено"); router.push("/"); }}
+          onYes={() => { apply(deleteObligation(st, ob.id)); toast("Удалено"); router.push("/obligations"); }}
           onClose={() => setConfirm(null)}
         />
       )}
