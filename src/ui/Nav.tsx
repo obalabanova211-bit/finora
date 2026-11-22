@@ -7,7 +7,7 @@ const ITEMS = [
   { href: "/", label: "Главная", icon: "home", soon: false },
   { href: "/obligations", label: "Обязательства", icon: "list", soon: false },
   { href: "/calendar", label: "Календарь", icon: "cal", soon: false },
-  { href: "/analytics", label: "Аналитика", icon: "chart", soon: true },
+  { href: "/analytics", label: "Аналитика", icon: "chart", soon: false },
   { href: "/settings", label: "Настройки", icon: "gear", soon: false },
 ];
 

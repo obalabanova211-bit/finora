@@ -2,8 +2,8 @@
    Не знает про React и браузер: UI вызывает их и получает новое состояние. */
 
 import {
-  type Obligation, type JournalEntry, type EffectiveRate,
-  splitPayment, effRate, isEvent, nextPayDate, monthPayments,
+  type Obligation, type JournalEntry, type EffectiveRate, type MonthPayment,
+  splitPayment, effRate, isEvent, nextPayDate, monthPayments, monthKey,
 } from "./domain";
 
 export interface AppState {
@@ -191,6 +191,60 @@ export function sectionTotals(s: ListSections): SectionTotals {
   for (const o of s.events) balanceTotal += o.balanceKop ?? 0;
   return { balanceCredits, balanceTotal: balanceTotal + balanceCredits, payCredits, payRegular, payTotal: payCredits + payRegular };
 }
+
+/* ---------- аналитика ---------- */
+
+export interface CategoryShare {
+  category: string;
+  amountKop: number;
+  pct: number;
+}
+
+export function categoryShares(pays: MonthPayment[]): CategoryShare[] {
+  // доли платежей месяца по категориям; округление вниз, остаток до ровно 100% —
+  // категориям с наибольшей дробной частью (по одной единице)
+  const amounts = new Map<string, number>();
+  let sum = 0;
+  for (const p of pays) {
+    amounts.set(p.ob.category, (amounts.get(p.ob.category) ?? 0) + p.amountKop);
+    sum += p.amountKop;
+  }
+  const out: (CategoryShare & { exact: number })[] = [];
+  for (const [category, amountKop] of amounts) {
+    const exact = sum > 0 ? (amountKop / sum) * 100 : 0;
+    out.push({ category, amountKop, exact, pct: Math.floor(exact) });
+  }
+  let left = 100 - out.reduce((s, c) => s + c.pct, 0);
+  const byFrac = [...out].sort((a, b) => (b.exact - b.pct) - (a.exact - a.pct));
+  for (let i = 0; left > 0 && out.length > 0; i = (i + 1) % out.length) {
+    byFrac[i]!.pct += 1;
+    left -= 1;
+  }
+  return out.map(({ category, amountKop, pct }) => ({ category, amountKop, pct }));
+}
+
+export interface MonthPaid {
+  label: string;
+  amountKop: number;
+  count: number;
+}
+
+export function paidByMonth(journal: JournalEntry[], y: number, mIdx: number, count = 3): MonthPaid[] {
+  // сколько отмечено оплаченным за последние `count` месяцев, включая текущий
+  const out: MonthPaid[] = [];
+  for (let k = count - 1; k >= 0; k--) {
+    const d = new Date(y, mIdx - k, 1);
+    const key = monthKey(d.getFullYear(), d.getMonth());
+    let amountKop = 0, n = 0;
+    for (const j of journal) {
+      if (j.date.slice(0, 7) === key) { amountKop += j.amountKop; n++; }
+    }
+    out.push({ label: MONTH_LABELS[d.getMonth()] + " " + d.getFullYear(), amountKop, count: n });
+  }
+  return out;
+}
+
+const MONTH_LABELS = ["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
 
 /* ---------- представления для карточки ---------- */
 
