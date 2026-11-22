@@ -1,0 +1,14 @@
+{
+  "name": "finora",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Финансовое приложение для учёта обязательств (РФ и СНГ). Рабочие материалы KIT: C:\\Users\\balab\\Projects\\finance-app-kit",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.1"
+  }
+}
