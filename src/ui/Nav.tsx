@@ -8,7 +8,7 @@ const ITEMS = [
   { href: "/obligations", label: "Обязательства", icon: "list", soon: false },
   { href: "/calendar", label: "Календарь", icon: "cal", soon: false },
   { href: "/analytics", label: "Аналитика", icon: "chart", soon: true },
-  { href: "/settings", label: "Настройки", icon: "gear", soon: true },
+  { href: "/settings", label: "Настройки", icon: "gear", soon: false },
 ];
 
 function Icon({ name }: { name: string }) {
