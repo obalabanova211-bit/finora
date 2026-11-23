@@ -55,12 +55,14 @@ export default function ObligationForm({ ob }: { ob?: Obligation }) {
       toast("Проверьте выделенные поля");
       return;
     }
+    const balNum = bal.trim() === "" ? null : parseRubToKop(bal);
     const draft = {
       name: name.trim(),
       category: cat,
       payKop: isEv ? null : payKop!,
       day: isEv ? 1 : dayN,
-      balanceKop: bal.trim() === "" ? null : parseRubToKop(bal),
+      // 0 в остатке = «без остатка» (регулярный платёж), чтобы не уводить запись в кредиты
+      balanceKop: !isEv && balNum === 0 ? null : balNum,
       rateSot: parseRateToSot(rate),
       endMonth: endM || null,
       event: isEv ? (evt.trim() || "") : null,
@@ -106,7 +108,7 @@ export default function ObligationForm({ ob }: { ob?: Obligation }) {
 
         <details>
           <summary>Подробнее (необязательно)</summary>
-          <label className="f">Остаток обязательства, ₽ — оставьте пустым для регулярного платежа (аренда, подписка)</label>
+          <label className="f">Остаток обязательства, ₽ — оставьте пустым (или впишите 0) для регулярного платежа: аренда, коммуналка, подписки</label>
           <input type="number" min={0} step="any" value={bal} onChange={e => setBal(e.target.value)} />
 
           <label className="f">Когда возвращать</label>
