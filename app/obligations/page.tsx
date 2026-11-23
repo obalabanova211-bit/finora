@@ -7,8 +7,6 @@ import { listSections, sectionTotals } from "../../src/store";
 import type { Obligation } from "../../src/domain";
 import { useAppState } from "../../src/ui/useAppState";
 import Toast from "../../src/ui/Toast";
-import Confirm from "../../src/ui/Confirm";
-import { myDataState } from "../../src/mydata";
 
 type Tab = "all" | "active" | "miss" | "closed";
 
@@ -63,9 +61,8 @@ function ObCard({ o, missed }: { o: Obligation; missed: boolean }) {
 }
 
 export default function ListPage() {
-  const { st, ready, apply, loadDemo, toastMsg, toast } = useAppState();
+  const { st, ready, loadDemo, toastMsg, toast } = useAppState();
   const [tab, setTab] = useState<Tab>("all");
-  const [askMy, setAskMy] = useState(false);
 
   if (!ready || !st) return <Toast msg={toastMsg} />;
 
@@ -127,20 +124,6 @@ export default function ListPage() {
         </>
       )}
       <Link href="/add" className="btn" style={{ display: "block", textAlign: "center", textDecoration: "none", marginTop: 18 }}>+ Добавить обязательство</Link>
-      {!empty && (
-        <div style={{ textAlign: "center", marginTop: 12 }}>
-          <button className="linkbtn" onClick={() => setAskMy(true)}>Вернуть мои данные от 21.11.2026</button>
-        </div>
-      )}
-      {askMy && (
-        <Confirm
-          title="Вернуть ваши данные?"
-          text={"Вместо текущего списка будут загружены ваши 20 обязательств из таблицы (по состоянию на 21 ноября 2026) и отметки оплат за ноябрь."}
-          yesLabel="Вернуть мои данные"
-          onYes={() => { apply(myDataState()); setAskMy(false); toast("Ваши данные загружены"); }}
-          onClose={() => setAskMy(false)}
-        />
-      )}
       <Toast msg={toastMsg} />
     </>
   );

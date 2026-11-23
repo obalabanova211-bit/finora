@@ -14,6 +14,7 @@
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "netlify-cli": "^27.20.1",
     "typescript": "^7.0.2",
     "vitest": "^5.1.1"
   },
