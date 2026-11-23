@@ -82,7 +82,7 @@ export default function CalendarPage() {
           <div key={p.ob.id}>
             {head && <div className="k daygrp" style={{ marginTop: 18 }}>{dd} {MONTH_RU_G[m]}, {DOW_FULL[wd]}</div>}
             <div className="card row">
-              <Link href={"/item/" + p.ob.id} style={{ flex: 1, textDecoration: "none", color: "inherit" }}>
+              <Link href={"/item?id=" + p.ob.id} style={{ flex: 1, textDecoration: "none", color: "inherit" }}>
                 <b>{p.ob.name}</b><br /><span className="mut sm">{p.ob.category}</span>
               </Link>
               <div style={{ textAlign: "right" }}>

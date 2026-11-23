@@ -73,7 +73,7 @@ export default function HomePage() {
       <h2>Ближайшие платежи</h2>
       {upcoming.length > 0 ? upcoming.map(p => (
         <div className="card ob row" key={p.ob.id}>
-          <Link href={"/item/" + p.ob.id} className="ob" style={{ flex: 1 }}>
+          <Link href={"/item?id=" + p.ob.id} className="ob" style={{ flex: 1 }}>
             <b>{p.ob.name}</b><br />
             <span className="mut sm">{p.date.getDate()} {MONTH_RU_G[p.date.getMonth()]} · {p.ob.category}</span>
           </Link>

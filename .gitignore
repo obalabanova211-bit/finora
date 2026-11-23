@@ -4,7 +4,6 @@ dist/
 .env
 tests/_run.js
 .next/
+out/
 tsconfig.tsbuildinfo
-
-# Local Netlify folder
 .netlify

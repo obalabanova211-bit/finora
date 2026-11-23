@@ -1,33 +1,37 @@
 "use client";
 
-import { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   effRate, endAtTempt, endHuman, fmtKop, isEvent, isPaidIn, monthsToEnd,
   nextPayDate, payDateFor, simulateClose, MONTH_RU, MONTH_RU_G,
   type Obligation,
-} from "../../../src/domain";
-import { closeObligation, deleteObligation, undoPayment } from "../../../src/store";
-import { useAppState } from "../../../src/ui/useAppState";
-import Toast from "../../../src/ui/Toast";
-import PayModal from "../../../src/ui/PayModal";
-import CalcModal from "../../../src/ui/CalcModal";
-import Confirm from "../../../src/ui/Confirm";
+} from "../../src/domain";
+import { closeObligation, deleteObligation, undoPayment } from "../../src/store";
+import { useAppState } from "../../src/ui/useAppState";
+import Toast from "../../src/ui/Toast";
+import PayModal from "../../src/ui/PayModal";
+import CalcModal from "../../src/ui/CalcModal";
+import Confirm from "../../src/ui/Confirm";
 
 function dHuman(d: Date): string {
   return d.getDate() + " " + MONTH_RU_G[d.getMonth()];
 }
 
 export default function ItemPage() {
+  return <Suspense fallback={null}><ItemInner /></Suspense>;
+}
+
+function ItemInner() {
   const { st, ready, apply, toastMsg, toast } = useAppState();
-  const params = useParams<{ id: string }>();
+  const params = useSearchParams();
   const router = useRouter();
   const [payOpen, setPayOpen] = useState(false);
   const [calcOpen, setCalcOpen] = useState(false);
   const [confirm, setConfirm] = useState<"close" | "del" | null>(null);
 
   if (!ready || !st) return <Toast msg={toastMsg} />;
-  const ob: Obligation | undefined = st.obligations.find(o => o.id === Number(params.id));
+  const ob: Obligation | undefined = st.obligations.find(o => o.id === Number(params.get("id")));
   if (!ob) {
     return (
       <>
@@ -129,7 +133,7 @@ export default function ItemPage() {
           {ob.balanceKop !== null && !ev && <button className="btn ghost" onClick={() => setCalcOpen(true)}>А если платить больше?</button>}
         </>
       )}
-      <button className="btn ghost" onClick={() => router.push("/edit/" + ob.id)}>Изменить</button>
+      <button className="btn ghost" onClick={() => router.push("/edit?id=" + ob.id)}>Изменить</button>
       {ob.status === "active" && <button className="btn ghost" onClick={() => setConfirm("close")}>Закрыть обязательство</button>}
       <button className="btn danger" onClick={() => setConfirm("del")}>Удалить</button>
 

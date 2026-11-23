@@ -78,7 +78,7 @@ export default function ObligationForm({ ob }: { ob?: Obligation }) {
       nextId = next.obligations[next.obligations.length - 1]!.id;
     }
     toast("Сохранено");
-    router.push("/item/" + nextId);
+    router.push("/item?id=" + nextId);
   };
 
   return (

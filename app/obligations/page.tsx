@@ -45,7 +45,7 @@ function ObCard({ o, missed }: { o: Obligation; missed: boolean }) {
   return (
     <div className="card">
       <div className="row">
-        <Link href={"/item/" + o.id} style={{ flex: 1, textDecoration: "none", color: "inherit" }}>
+        <Link href={"/item?id=" + o.id} style={{ flex: 1, textDecoration: "none", color: "inherit" }}>
           <b>{o.name}</b><br />
           <span className="mut sm">{o.category}{o.recipient ? " · " + o.recipient : ""} · {sub}</span>
         </Link>

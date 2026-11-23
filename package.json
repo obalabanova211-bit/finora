@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "build:site": "set SITE_BASE=1&& next build",
+    "publish": "npm run build:site && gh-pages -d out",
+    "start": "serve out -l 3000",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
@@ -14,8 +16,9 @@
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "netlify-cli": "^27.20.1",
-    "typescript": "^7.0.2",
+    "gh-pages": "^6.3.0",
+    "serve": "^14.2.8",
+    "typescript": "5.9",
     "vitest": "^5.1.1"
   },
   "dependencies": {
